@@ -30,7 +30,18 @@ class PersonController {
 
     const people = await Person.query().where(function () {
       for (let [key, value] of Object.entries(params)) {
-        this.where(key, value)
+        console.log(typeof key, value)
+        switch (key) {
+          case 'name':
+          case 'username':
+          case 'email':
+            this.where(key, 'LIKE', `%${value}%`)
+            break
+          default:
+            console.log(key, value)
+            this.where(key, value)
+        }
+
       }
     }).fetch()
 
